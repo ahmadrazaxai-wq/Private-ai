@@ -7,108 +7,75 @@
 <meta name="theme-color" content="#0d0d0d">
 <title>Obsidian AI</title>
 <style>
-:root{color-scheme:dark;--bg:#0d0d0d;--panel:#171717;--surface:#212121;--muted:#9b9b9b;--line:#303030;--white:#f4f4f4}
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--white);font:15px/1.5 system-ui,sans-serif}
-button,input,textarea{font:inherit}
-button{color:inherit;cursor:pointer;border:0}
-.hidden{display:none!important}
-#app{height:100dvh;display:flex;overflow:hidden}
-.sidebar{width:290px;max-width:86vw;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:14px;gap:12px;position:fixed;z-index:20;inset:0 auto 0 0;transform:translateX(-105%);transition:transform .22s}
-.sidebar.open{transform:translateX(0)}
-.shade{position:fixed;inset:0;background:#0009;z-index:19;display:none}
-.shade.show{display:block}
-.brand{font-weight:650}
-.side-top{display:flex;align-items:center;justify-content:space-between;padding:4px 2px 10px}
-.iconbtn{width:40px;height:40px;border-radius:12px;background:transparent;display:grid;place-items:center;color:#ddd}
-.navbtn,.primary{border-radius:12px;padding:11px 13px;text-align:left;background:#ffffff0b;display:flex;align-items:center;gap:10px;width:100%}
-.primary{background:#f4f4f4;color:#111;font-weight:650;justify-content:center}
-.side-panel{background:#202020;border:1px solid #303030;border-radius:14px;padding:12px}
-.side-panel h3{font-size:13px;margin:0 0 8px}
-.side-panel p,.small{font-size:12px;color:var(--muted)}
-.side-bottom{margin-top:auto;display:grid;gap:8px}
-.main{min-width:0;flex:1;display:flex;flex-direction:column;height:100%;width:100%}
-.topbar{height:58px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid #ffffff0a}
-.top-left{display:flex;align-items:center;gap:8px}
-.top-title{font-weight:650}
-.voice-orb{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#aaa 30%,#666 65%,#222);box-shadow:0 0 18px #aaa5;display:grid;place-items:center;color:#111}
-#messages{flex:1;overflow-y:auto;padding:22px 16px 150px}
-.welcome{max-width:680px;margin:14vh auto 0;text-align:center}
-.welcome h1{font-size:26px;font-weight:600;margin:0 0 8px}
-.welcome p{color:var(--muted)}
-.message{max-width:760px;margin:0 auto 24px;display:flex;flex-direction:column;gap:7px}
-.message.user{align-items:flex-end}
-.bubble{max-width:min(88%,680px);white-space:pre-wrap;overflow-wrap:anywhere;padding:11px 15px;border-radius:19px;background:var(--surface)}
-.assistant .bubble{background:transparent;padding:2px}
-.role{font-size:11px;color:var(--muted)}
-.composer-wrap{position:absolute;bottom:0;left:0;right:0;padding:16px 14px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent,#0d0d0d 22%);display:flex;justify-content:center;pointer-events:none}
-.composer{pointer-events:auto;width:min(760px,100%);min-height:58px;background:#202020;border:1px solid #393939;border-radius:27px;display:flex;align-items:flex-end;padding:8px 9px 8px 17px;gap:8px}
-.composer textarea{flex:1;resize:none;max-height:130px;min-height:38px;border:0;outline:0;background:transparent;color:#fff;padding:8px 0}
-.send{width:40px;height:40px;border-radius:50%;background:#f4f4f4;color:#111;flex-shrink:0}
-.mic{width:38px;height:40px;background:transparent;color:#ddd}
-.modal-back{position:fixed;inset:0;background:#000a;z-index:40;display:grid;place-items:center;padding:16px}
-.modal{width:min(500px,100%);max-height:88dvh;overflow:auto;background:#191919;border:1px solid #383838;border-radius:20px;padding:20px}
-.modal h2{margin:0 0 14px}
-.field{display:grid;gap:6px;margin:12px 0}
-.field label{font-size:12px;color:#bbb}
-.field input,.field textarea{width:100%;background:#101010;border:1px solid #383838;border-radius:10px;padding:11px;color:#fff}
-.field textarea{min-height:110px}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
-.secondary{background:#2b2b2b;padding:10px 14px;border-radius:10px}
-.login-screen{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;place-items:center;padding:20px}
-.login-card{width:min(390px,100%);background:#171717;border:1px solid #303030;border-radius:22px;padding:25px}
-.login-card h1{font-size:24px;margin:0 0 5px}
-.login-card>p{color:var(--muted);font-size:13px}
-.toggleline{display:flex;align-items:center;gap:8px;font-size:12px;color:#ccc}
-#voiceOverlay{position:fixed;inset:0;z-index:35;background:#090909;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}
-.voice-orb-big{width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#c7c7c7 22%,#777 48%,#242424 75%);box-shadow:0 0 35px #aaa8;animation:pulse 2.2s ease-in-out infinite}
-@keyframes pulse{0%,100%{transform:scale(.94)}50%{transform:scale(1.06)}}
-.voice-title{font-size:19px}
-.voice-sub{font-size:13px;color:var(--muted)}
-.voice-controls{display:flex;gap:12px}
-.round{width:48px;height:48px;border-radius:50%;background:#252525}
-.toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%);z-index:70;background:#eee;color:#111;padding:9px 14px;border-radius:30px}
-.book-results{max-height:180px;overflow:auto;font-size:12px;color:#bbb}
-@media(min-width:800px){.sidebar{position:relative;transform:none;inset:auto;flex-shrink:0}.shade{display:none!important}.main{width:calc(100% - 290px)}}
+:root{color-scheme:dark;--bg:#0d0d0d;--panel:#171717;--surface:#212121;--muted:#9b9b9b;--line:#303030;--white:#f4f4f4;--accent:#fff}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--white);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,textarea{font:inherit}button{color:inherit;cursor:pointer;border:0}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #aaa;outline-offset:2px}.hidden{display:none!important}
+#app{height:100dvh;display:flex;overflow:hidden}.sidebar{width:290px;max-width:86vw;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:14px;gap:12px;position:fixed;z-index:20;inset:0 auto 0 0;transform:translateX(-105%);transition:transform .22s ease}.sidebar.open{transform:translateX(0)}.shade{position:fixed;inset:0;background:#0009;z-index:19;display:none}.shade.show{display:block}
+.brand{font-weight:650;letter-spacing:.2px}.side-top{display:flex;align-items:center;justify-content:space-between;padding:4px 2px 10px}.iconbtn{width:40px;height:40px;border-radius:12px;background:transparent;display:grid;place-items:center;color:#ddd}.iconbtn:active,.navbtn:active{background:#ffffff12}.navbtn,.primary{border-radius:12px;padding:11px 13px;text-align:left;background:#ffffff0b;display:flex;align-items:center;gap:10px;width:100%}.primary{background:#f4f4f4;color:#111;font-weight:650;justify-content:center}.side-panel{background:#202020;border:1px solid #303030;border-radius:14px;padding:12px}.side-panel h3{font-size:13px;margin:0 0 8px;color:#ddd}.side-panel p{font-size:12px;color:var(--muted);margin:0 0 10px}.side-bottom{margin-top:auto;display:grid;gap:8px}
+.main{min-width:0;flex:1;display:flex;flex-direction:column;height:100%;width:100%}.topbar{height:58px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid #ffffff0a;background:#0d0d0deF;z-index:5}.top-left{display:flex;align-items:center;gap:8px}.top-title{font-weight:650;font-size:15px}.voice-orb{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#aaa 30%,#666 65%,#222);box-shadow:0 0 18px #aaa5;display:grid;place-items:center;color:#111}
+#messages{flex:1;overflow-y:auto;padding:22px 16px 150px;scroll-behavior:smooth}.welcome{max-width:680px;margin:14vh auto 0;text-align:center}.welcome h1{font-size:26px;font-weight:600;letter-spacing:-.8px;margin:0 0 8px}.welcome p{color:var(--muted);margin:0}.message{max-width:760px;margin:0 auto 24px;display:flex;flex-direction:column;gap:7px}.message.user{align-items:flex-end}.bubble{max-width:min(88%,680px);white-space:pre-wrap;overflow-wrap:anywhere;padding:11px 15px;border-radius:19px;background:var(--surface)}.assistant .bubble{background:transparent;padding:2px 2px;max-width:100%}.role{font-size:11px;color:var(--muted);padding:0 4px}.typing{color:var(--muted);font-size:13px}
+.composer-wrap{position:absolute;bottom:0;left:0;right:0;padding:16px 14px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent,#0d0d0d 22%);display:flex;justify-content:center;pointer-events:none}.composer{pointer-events:auto;width:min(760px,100%);min-height:58px;background:#202020;border:1px solid #393939;border-radius:27px;display:flex;align-items:flex-end;padding:8px 9px 8px 17px;gap:8px;box-shadow:0 8px 35px #0008}.composer textarea{flex:1;resize:none;max-height:130px;min-height:38px;border:0;outline:0;background:transparent;color:#fff;padding:8px 0;line-height:1.4}.composer textarea::placeholder{color:#929292}.send{width:40px;height:40px;border-radius:50%;background:#f4f4f4;color:#111;display:grid;place-items:center;flex-shrink:0}.mic{width:38px;height:40px;background:transparent;color:#ddd;display:grid;place-items:center;flex-shrink:0}
+.modal-back{position:fixed;inset:0;background:#000a;z-index:9999!important;display:grid;place-items:center;padding:16px;isolation:isolate;overscroll-behavior:contain;touch-action:auto}.modal{width:min(500px,100%);max-height:88dvh;overflow:auto;background:#191919;border:1px solid #383838;border-radius:20px;padding:20px;box-shadow:0 25px 80px #000a}.modal h2{margin:0 0 14px;font-size:19px}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:12px;color:#bbb}.field input,.field textarea{width:100%;background:#101010;border:1px solid #383838;border-radius:10px;padding:11px;color:#fff;min-width:0}.field textarea{min-height:110px;resize:vertical}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.secondary{background:#2b2b2b;padding:10px 14px;border-radius:10px}.small{font-size:12px;color:var(--muted)}.login-screen{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;place-items:center;padding:20px}.login-card{width:min(390px,100%);background:#171717;border:1px solid #303030;border-radius:22px;padding:25px}.login-card h1{font-size:24px;margin:0 0 5px}.login-card>p{color:var(--muted);font-size:13px;margin:0 0 20px}.toggleline{display:flex;align-items:center;gap:8px;font-size:12px;color:#ccc;margin:10px 0}.toggleline input{accent-color:white}
+#voiceOverlay{position:fixed;inset:0;z-index:35;background:#090909;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}.voice-orb-big{width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#c7c7c7 22%,#777 48%,#242424 75%);box-shadow:0 0 35px #aaa8,0 0 90px #7775;animation:pulse 2.2s ease-in-out infinite}.voice-orb-big.speaking{animation:pulse .8s ease-in-out infinite;box-shadow:0 0 55px #fff9,0 0 120px #aaa8}@keyframes pulse{0%,100%{transform:scale(.94);filter:brightness(.9)}50%{transform:scale(1.06);filter:brightness(1.2)}}.voice-title{font-size:19px}.voice-sub{font-size:13px;color:var(--muted)}.voice-controls{display:flex;gap:12px}.round{width:48px;height:48px;border-radius:50%;background:#252525;display:grid;place-items:center}.round.active{background:#f4f4f4;color:#111}
+.toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%);z-index:70;background:#eee;color:#111;padding:9px 14px;border-radius:30px;font-size:13px;box-shadow:0 5px 25px #0008;max-width:90vw;text-align:center}
+.book-results{max-height:180px;overflow:auto;font-size:12px;color:#bbb}.book-results div{padding:6px 0;border-top:1px solid #333}
+@media(min-width:800px){.sidebar{position:relative;transform:none;inset:auto;flex-shrink:0}.shade{display:none!important}.main{width:calc(100% - 290px)}#messages{padding-left:28px;padding-right:28px}}
 </style>
 </head>
 <body>
 <div id="app">
-<aside class="sidebar" id="sidebar">
-<div class="side-top"><span class="brand">Obsidian AI</span><button class="iconbtn" id="closeSide">✕</button></div>
-<button class="primary" id="newChat">＋ New Chat</button>
-<section class="side-panel"><h3>Book Library</h3><p>Store notes and reference text.</p><button class="navbtn" id="openBooks">＋ Add / Search Books</button></section>
-<section class="side-panel"><h3>Memory Search</h3><p>Search conversation history.</p><div style="display:flex;gap:6px"><input id="memoryQuery" placeholder="Search memories" style="min-width:0;width:100%;background:#111;border:1px solid #383838;border-radius:8px;padding:8px;color:white"><button class="secondary" id="searchMemory">Go</button></div><div id="memoryResults" class="book-results"></div></section>
-<div class="side-bottom"><button class="navbtn" id="openSettings">⚙ Settings</button><button class="navbtn" id="logout">⇥ Logout</button></div>
-</aside>
-<div class="shade" id="shade"></div>
-<main class="main">
-<header class="topbar"><div class="top-left"><button class="iconbtn" id="menuBtn">☰</button><span class="top-title">Obsidian AI</span></div><button class="iconbtn" id="voiceBtn"><span class="voice-orb">◉</span></button></header>
-<section id="messages"><div class="welcome" id="welcome"><h1>What do you need to know?</h1><p>Direct answers. Persistent memory. No filler.</p></div></section>
-<div class="composer-wrap"><div class="composer"><textarea id="prompt" rows="1" placeholder="Message Obsidian AI"></textarea><button class="mic" id="micBtn">♩</button><button class="send" id="sendBtn">↑</button></div></div>
-</main>
+ <aside class="sidebar" id="sidebar">
+  <div class="side-top"><span class="brand">Obsidian AI</span><button class="iconbtn" id="closeSide" aria-label="Close menu">✕</button></div>
+  <button class="primary" id="newChat">＋　New Chat</button>
+  <section class="side-panel"><h3>Book Library</h3><p>Store notes and reference text for retrieval.</p><button class="navbtn" id="openBooks">＋ Add / Search Books</button></section>
+  <section class="side-panel"><h3>Memory Search</h3><p>Search your saved conversation history.</p><button class="navbtn" id="openMemory">⌕　Search Memories</button></section>
+  <div class="side-bottom"><button class="navbtn" id="openSettings">⚙　Settings</button><button class="navbtn" id="logout">⇥　Logout</button></div>
+ </aside>
+ <div class="shade" id="shade"></div>
+ <main class="main">
+  <header class="topbar"><div class="top-left"><button class="iconbtn" id="menuBtn" aria-label="Open menu">☰</button><span class="top-title">Obsidian AI</span></div><button class="iconbtn" id="voiceBtn" aria-label="Live voice mode"><span class="voice-orb">◉</span></button></header>
+  <section id="messages"><div class="welcome" id="welcome"><h1>What do you need to know?</h1><p>Direct answers. Persistent memory. No filler.</p></div></section>
+  <div class="composer-wrap"><div class="composer"><textarea id="prompt" rows="1" placeholder="Message Obsidian AI"></textarea><button class="mic" id="micBtn" aria-label="Voice to text">♩</button><button class="send" id="sendBtn" aria-label="Send">↑</button></div></div>
+ </main>
 </div>
-<div class="login-screen" id="loginScreen"><div class="login-card"><h1>Obsidian AI</h1><p>Secure access to your private assistant.</p>
-<div class="field"><label>Email</label><input id="loginEmail" type="email" placeholder="you@example.com"></div>
-<div class="field"><label>Password</label><input id="loginPassword" type="password" placeholder="Password"></div>
-<label class="toggleline"><input type="checkbox" id="showLoginConfig"> Configure Supabase keys</label>
-<div id="loginConfig" class="hidden"><div class="field"><label>Supabase URL</label><input id="loginSupabaseUrl" placeholder="https://your-project.supabase.co"></div><div class="field"><label>Supabase anon / publishable key</label><input id="loginSupabaseKey"></div></div>
-<button class="primary" id="loginBtn">Sign in</button><p class="small" id="loginStatus"></p></div></div>
+
+<div class="login-screen" id="loginScreen">
+ <div class="login-card"><h1>Obsidian AI</h1><p>Secure access to your private assistant.</p>
+  <div class="field"><label for="loginEmail">Email</label><input id="loginEmail" type="email" autocomplete="username" placeholder="you@example.com"></div>
+  <div class="field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Password"></div>
+  <label class="toggleline"><input type="checkbox" id="showLoginConfig"> Configure Supabase keys</label>
+  <div id="loginConfig" class="hidden"><div class="field"><label>Supabase project URL</label><input id="loginSupabaseUrl" placeholder="https://your-project.supabase.co"></div><div class="field"><label>Supabase anon / publishable key</label><input id="loginSupabaseKey" placeholder="sb_publishable_… or anon key"></div></div>
+  <button class="primary" id="loginBtn">Sign in</button><p class="small" id="loginStatus" style="margin:12px 0 0"></p>
+  <p class="small" style="margin-top:15px">First-time users: create an account in your Supabase project's Auth dashboard or enable sign-ups in Supabase Auth.</p>
+ </div>
+</div>
+
 <div class="modal-back hidden" id="settingsModal"><div class="modal"><h2>Settings</h2>
-<div class="field"><label>Supabase URL</label><input id="setSupabaseUrl"></div>
-<div class="field"><label>Supabase anon / publishable key</label><input id="setSupabaseKey"></div>
-<div class="field"><label>Groq API Key</label><input id="setGroqKey" type="password"></div>
-<div class="field"><label>MacroDroid Webhook URL</label><input id="setWebhook"></div>
-<p class="small">Browser-stored API keys are visible to the device owner. Use a server-side proxy for production.</p>
-<div class="modal-actions"><button class="secondary" id="closeSettings">Cancel</button><button class="primary" style="width:auto" id="saveSettings">Save settings</button></div></div></div>
+ <div class="field"><label>Supabase URL</label><input id="setSupabaseUrl" placeholder="https://project.supabase.co"></div>
+ <div class="field"><label>Supabase anon / publishable key</label><input id="setSupabaseKey" placeholder="Public client key"></div>
+ <div class="field"><label>Groq API Key</label><input id="setGroqKey" type="password" placeholder="gsk_…"></div>
+ <div class="field"><label>MacroDroid Webhook URL</label><input id="setWebhook" placeholder="https://…"></div>
+ <p class="small">Keys are stored in this browser's localStorage. A Groq key in a browser app is visible to the device owner and can be extracted; use a server-side proxy for production. Enable Supabase Row Level Security (RLS).</p>
+ <div class="modal-actions"><button class="secondary" id="closeSettings">Cancel</button><button class="primary" style="width:auto" id="saveSettings">Save settings</button></div>
+ </div></div>
+
 <div class="modal-back hidden" id="booksModal"><div class="modal"><h2>Book Library</h2>
-<div class="field"><label>Title</label><input id="bookTitle"></div>
-<div class="field"><label>Paste text</label><textarea id="bookContent"></textarea></div>
-<div class="field"><label>Upload .txt</label><input type="file" id="bookFile" accept=".txt,text/plain"></div>
-<div class="field"><label>Search books</label><input id="bookSearch"></div><button class="secondary" id="searchBooks">Search books</button><div id="bookResults" class="book-results"></div>
-<div class="modal-actions"><button class="secondary" id="closeBooks">Close</button><button class="primary" style="width:auto" id="saveBook">Save book</button></div></div></div>
-<div id="voiceOverlay" class="hidden"><div class="voice-title">Live Voice Mode</div><div class="voice-orb-big" id="voiceOrb"></div><div class="voice-sub" id="voiceStatus">Listening is off</div><div class="voice-controls"><button class="round" id="voiceListen">🎙</button><button class="round" id="voiceMute">🔊</button><button class="round" id="voiceClose">✕</button></div></div>
+ <div class="field"><label>Book / document title</label><input id="bookTitle" placeholder="Title"></div>
+ <div class="field"><label>Paste text</label><textarea id="bookContent" placeholder="Paste notes, excerpts, or reference text…"></textarea></div>
+ <div class="field"><label>Or upload a .txt file</label><input type="file" id="bookFile" accept=".txt,text/plain"></div>
+ <div class="field"><label>Search saved books</label><input id="bookSearch" placeholder="Search your library"></div><button class="secondary" id="searchBooks">Search books</button><div id="bookResults" class="book-results"></div>
+ <div class="modal-actions"><button class="secondary" id="closeBooks">Close</button><button class="primary" style="width:auto" id="saveBook">Save book</button></div>
+ </div></div>
+
+<div class="modal-back hidden" id="memoryModal"><div class="modal"><h2>Memory Search</h2>
+ <p class="small">Search your saved conversation history.</p>
+ <div class="field"><label for="memoryQuery">Search memories</label><input id="memoryQuery" placeholder="Enter a word or phrase" autocomplete="off"></div>
+ <button class="secondary" id="searchMemory">Search memories</button><div id="memoryResults" class="book-results" style="max-height:36dvh;margin-top:12px"></div>
+ <div class="modal-actions"><button class="secondary" id="closeMemory">Close</button></div>
+ </div></div>
+
+<div id="voiceOverlay" class="hidden"><div class="voice-title">Live Voice Mode</div><div class="voice-orb-big" id="voiceOrb"></div><div class="voice-sub" id="voiceStatus">Listening is off</div><div class="voice-controls"><button class="round active" id="voiceListen" title="Start / stop listening">🎙</button><button class="round active" id="voiceMute" title="Mute / unmute speech">🔊</button><button class="round" id="voiceClose" title="Close">✕</button></div></div>
 <div id="toast" class="toast hidden"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (()=>{
@@ -121,40 +88,49 @@ function loadSettings(){try{return JSON.parse(localStorage.getItem(STORAGE)||'{}
 function saveLocal(){localStorage.setItem(STORAGE,JSON.stringify(settings))}
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.remove('hidden');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.add('hidden'),2600)}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function setClient(){supabase=null;if(settings.supabaseUrl&&settings.supabaseKey&&window.supabase?.createClient)supabase=window.supabase.createClient(settings.supabaseUrl,settings.supabaseKey,{auth:{persistSession:true,autoRefreshToken:true}})}
+function setClient(){supabase=null;if(settings.supabaseUrl&&settings.supabaseKey&&window.supabase?.createClient){supabase=window.supabase.createClient(settings.supabaseUrl,settings.supabaseKey,{auth:{persistSession:true,autoRefreshToken:true}})}}
 function configFromLogin(){const u=$('loginSupabaseUrl').value.trim(),k=$('loginSupabaseKey').value.trim();if(u)settings.supabaseUrl=u;if(k)settings.supabaseKey=k;saveLocal();setClient()}
-function showApp(){$('loginScreen').classList.add('hidden')}
-function showLogin(msg=''){$('loginScreen').classList.remove('hidden');$('loginStatus').textContent=msg}
-async function initAuth(){if(settings.supabaseUrl)$('loginSupabaseUrl').value=settings.supabaseUrl;if(settings.supabaseKey)$('loginSupabaseKey').value=settings.supabaseKey;setClient();if(!supabase)return showLogin('Configure Supabase URL and public key.');try{const {data}=await supabase.auth.getSession();if(data.session){user=data.session.user;showApp();await loadRecent()}else showLogin()}catch(e){showLogin(e.message)}}
-async function login(){configFromLogin();if(!supabase)return showLogin('Supabase URL and public key required.');const email=$('loginEmail').value.trim(),password=$('loginPassword').value;if(!email||!password)return showLogin('Enter email and password.');$('loginStatus').textContent='Signing in…';try{const {data,error}=await supabase.auth.signInWithPassword({email,password});if(error)throw error;user=data.user;showApp();await loadRecent()}catch(e){showLogin(e.message)}}
-async function logout(){if(supabase)await supabase.auth.signOut();user=null;chat=[];$('messages').innerHTML='';showLogin()}
-function openSide(){$('sidebar').classList.add('open');$('shade').classList.add('show')}
-function closeSide(){$('sidebar').classList.remove('open');$('shade').classList.remove('show')}
+function showApp(){ $('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');}
+function showLogin(msg=''){ $('loginScreen').classList.remove('hidden');$('loginStatus').textContent=msg; }
+async function initAuth(){if(settings.supabaseUrl)$('loginSupabaseUrl').value=settings.supabaseUrl;if(settings.supabaseKey)$('loginSupabaseKey').value=settings.supabaseKey;setClient();if(!supabase)return showLogin('Configure your Supabase URL and public key to continue.');try{const {data}=await supabase.auth.getSession();if(data.session){user=data.session.user;showApp();await loadRecent()}else showLogin()}catch(e){showLogin(e.message)}}
+async function login(){configFromLogin();if(!supabase)return showLogin('A valid Supabase URL and public key are required.');const email=$('loginEmail').value.trim(),password=$('loginPassword').value;if(!email||!password)return showLogin('Enter email and password.');$('loginBtn').disabled=true;$('loginStatus').textContent='Signing in…';try{const {data,error}=await supabase.auth.signInWithPassword({email,password});if(error)throw error;user=data.user;showApp();await loadRecent()}catch(e){showLogin(e.message)}finally{$('loginBtn').disabled=false}}
+async function logout(){if(supabase)await supabase.auth.signOut();user=null;chat=[];$('messages').innerHTML='';$('messages').appendChild($('welcome'));showLogin()}
+function openSide(){ $('sidebar').classList.add('open');$('shade').classList.add('show')}
+function closeSide(){ $('sidebar').classList.remove('open');$('shade').classList.remove('show')}
+function openModal(id){closeSide();document.querySelectorAll('.modal-back').forEach(el=>el.classList.add('hidden'));$(id).classList.remove('hidden');$(id).style.zIndex='9999';}
 function addMessage(role,content,save=true){$('welcome').classList.add('hidden');const wrap=document.createElement('div');wrap.className='message '+(role==='user'?'user':'assistant');const label=document.createElement('div');label.className='role';label.textContent=role==='user'?'You':'Obsidian AI';const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent=content;wrap.append(label,bubble);$('messages').appendChild(wrap);$('messages').scrollTop=$('messages').scrollHeight;chat.push({role,content});if(save)persistMessage(role,content);return bubble}
-async function persistMessage(role,content){if(!supabase||!user)return;try{const {error}=await supabase.from('memories').insert({user_email:user.email,role,content});if(error)console.warn(error.message)}catch(e){console.warn(e)}}
-async function loadRecent(){if(!supabase||!user)return;try{const {data,error}=await supabase.from('memories').select('role,content,created_at').eq('user_email',user.email).order('created_at',{ascending:false}).limit(12);if(error)throw error;chat=(data||[]).reverse().map(x=>({role:x.role,content:x.content}))}catch(e){console.warn(e.message)}}
+async function persistMessage(role,content){if(!supabase||!user)return;try{const {error}=await supabase.from('memories').insert({user_email:user.email,role,content});if(error)console.warn('Memory save:',error.message)}catch(e){console.warn(e)}}
+async function loadRecent(){if(!supabase||!user)return;try{const {data,error}=await supabase.from('memories').select('role,content,created_at').eq('user_email',user.email).order('created_at',{ascending:false}).limit(12);if(error)throw error;chat=(data||[]).reverse().map(x=>({role:x.role,content:x.content}));}catch(e){console.warn('Could not load memories:',e.message)}}
 function keywords(s){return [...new Set((s.toLowerCase().match(/[a-z0-9]{4,}/g)||[]))].slice(0,6)}
-async function fetchMemories(query){if(!supabase||!user)return [];const words=keywords(query);if(words.length){const or=words.map(w=>`content.ilike.%${w.replace(/[%_,]/g,'')}%`).join(',');try{const {data}=await supabase.from('memories').select('role,content,created_at').eq('user_email',user.email).or(or).order('created_at',{ascending:false}).limit(8);if(data?.length)return data}catch(e){console.warn(e)}}const {data}=await supabase.from('memories').select('role,content').eq('user_email',user.email).order('created_at',{ascending:false}).limit(8);return data||[]}
-async function fetchBooks(query){if(!supabase||!user)return [];const words=keywords(query);if(!words.length)return [];const or=words.map(w=>`content.ilike.%${w.replace(/[%_,]/g,'')}%`).join(',');try{const {data,error}=await supabase.from('books').select('title,content').or(or).limit(3);if(error)throw error;return data||[]}catch(e){console.warn(e.message);return []}}
-async function askGroq(messages){if(!settings.groqKey)throw new Error('Add a Groq API key in Settings.');const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+settings.groqKey},body:JSON.stringify({model:'llama-3.3-70b-versatile',temperature:.2,messages})});const j=await r.json();if(!r.ok)throw new Error(j.error?.message||'Groq request failed');return j.choices?.[0]?.message?.content||'No response.'}
-function isPhoneCommand(s){return /\b(set|create|turn on|turn off|switch on|switch off|open|launch|call|dial|send|text|message|enable|disable)\b.{0,45}\b(alarm|timer|flashlight|torch|bluetooth|wifi|wi-fi|app|phone|contact|message|sms|camera|settings)\b/i.test(s)}
-async function runWebhook(command){if(!settings.webhookUrl)throw new Error('No MacroDroid webhook configured.');if(!confirm('Send this phone command to MacroDroid?\n\n'+command))return 'Phone command cancelled.';const url=settings.webhookUrl+(settings.webhookUrl.includes('?')?'&':'?')+'command='+encodeURIComponent(command);await fetch(url,{method:'GET',mode:'no-cors'});return 'MacroDroid request sent. Completion cannot be verified by the browser.'}
-async function send(){if(busy)return;const input=$('prompt'),text=input.value.trim();if(!text)return;input.value='';input.style.height='auto';addMessage('user',text);busy=true;$('sendBtn').disabled=true;const wait=document.createElement('div');wait.className='message assistant typing';wait.textContent='Processing…';$('messages').appendChild(wait);try{if(isPhoneCommand(text)&&settings.webhookUrl){const result=await runWebhook(text);wait.remove();addMessage('assistant',result);return}const [memories,books]=await Promise.all([fetchMemories(text),fetchBooks(text)]);const context=[];if(memories.length)context.push('Relevant saved memories:\n'+memories.map(m=>`[${m.role}] ${m.content}`).join('\n'));if(books.length)context.push('Relevant book excerpts:\n'+books.map(b=>`[${b.title}]\n${b.content.slice(0,5000)}`).join('\n\n'));const msgs=[{role:'system',content:SYSTEM+(context.length?'\n\nReference context:\n'+context.join('\n\n'):'')}];for(const m of chat.slice(-12))if(['user','assistant'].includes(m.role))msgs.push({role:m.role,content:m.content});const answer=await askGroq(msgs);wait.remove();addMessage('assistant',answer);if(voiceMode&&!muted)speak(answer)}catch(e){wait.remove();addMessage('assistant','Error: '+e.message,false)}finally{busy=false;$('sendBtn').disabled=false}}
-function speak(text){if(!('speechSynthesis'in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.onstart=()=>$('voiceOrb').classList.add('speaking');u.onend=()=>$('voiceOrb').classList.remove('speaking');speechSynthesis.speak(u)}
-function startRecognition(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return toast('Speech recognition is not supported.');if(recognition&&listening){recognition.stop();return}recognition=new SR();recognition.lang=navigator.language||'en-US';recognition.interimResults=true;recognition.onresult=e=>{let s='';for(let i=e.resultIndex;i<e.results.length;i++)s+=e.results[i][0].transcript;$('prompt').value=s};recognition.onend=()=>{listening=false;$('voiceListen').classList.remove('active');$('voiceStatus').textContent='Listening is off'};recognition.onerror=e=>toast(e.error);recognition.start();listening=true;$('voiceListen').classList.add('active');$('voiceStatus').textContent='Listening…'}
+async function fetchMemories(query){if(!supabase||!user)return [];let q=supabase.from('memories').select('role,content,created_at').eq('user_email',user.email).order('created_at',{ascending:false}).limit(8);const words=keywords(query);if(words.length){const or=words.map(w=>`content.ilike.%${w.replace(/[%_,]/g,'')}%`).join(',');try{const {data}=await supabase.from('memories').select('role,content,created_at').eq('user_email',user.email).or(or).order('created_at',{ascending:false}).limit(8);if(data?.length)return data}catch(e){console.warn(e)}}const {data}=await q;return data||[]}
+async function fetchBooks(query){if(!supabase||!user)return [];const words=keywords(query);if(!words.length)return [];const or=words.map(w=>`content.ilike.%${w.replace(/[%_,]/g,'')}%`).join(',');try{const {data,error}=await supabase.from('books').select('title,content').or(or).limit(3);if(error)throw error;return data||[]}catch(e){console.warn('Book search:',e.message);return []}}
+async function askGroq(messages){if(!settings.groqKey)throw new Error('Add a Groq API key in Settings first.');const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+settings.groqKey},body:JSON.stringify({model:'llama-3.3-70b-versatile',temperature:0.2,messages})});const j=await r.json();if(!r.ok)throw new Error(j.error?.message||'Groq request failed ('+r.status+')');return j.choices?.[0]?.message?.content||'No response returned.'}
+function isPhoneCommand(s){return /\b(set|create|turn on|turn off|switch on|switch off|open|launch|call|dial|send|text|message|enable|disable)\b.{0,45}\b(alarm|timer|flashlight|torch|bluetooth|wifi|wi-fi|app|phone|contact|message|sms|camera|settings)\b/i.test(s)||/^(alarm|flashlight|torch|open app|call|send message)\b/i.test(s)}
+async function runWebhook(command){if(!settings.webhookUrl)throw new Error('No MacroDroid webhook configured.');const confirmed=window.confirm('Send this phone command to MacroDroid?\n\n'+command+'\n\nOnly continue if you recognize and trust this action.');if(!confirmed)return 'Phone command cancelled.';const url=settings.webhookUrl+(settings.webhookUrl.includes('?')?'&':'?')+'command='+encodeURIComponent(command);const res=await fetch(url,{method:'GET',mode:'no-cors'});return 'MacroDroid request sent. The browser cannot verify whether the phone action completed.'}
+async function send(){if(busy)return;const input=$('prompt'),text=input.value.trim();if(!text)return;input.value='';input.style.height='auto';addMessage('user',text);busy=true;$('sendBtn').disabled=true;const wait=document.createElement('div');wait.className='message assistant typing';wait.textContent='Processing…';$('messages').appendChild(wait);try{
+ if(isPhoneCommand(text)&&settings.webhookUrl){const result=await runWebhook(text);wait.remove();addMessage('assistant',result);return}
+ const [memories,books]=await Promise.all([fetchMemories(text),fetchBooks(text)]);
+ const context=[];if(memories.length)context.push('Relevant saved memories:\n'+memories.map(m=>`[${m.role}] ${m.content}`).join('\n'));if(books.length)context.push('Relevant book-library excerpts:\n'+books.map(b=>`[${b.title}]\n${b.content.slice(0,5000)}`).join('\n\n'));
+ const msgs=[{role:'system',content:SYSTEM+(context.length?'\n\nReference context (use only when relevant; distinguish stored facts from inference):\n'+context.join('\n\n'):'')}];
+ const history=chat.slice(-12);for(const m of history){if(['user','assistant'].includes(m.role))msgs.push({role:m.role,content:m.content})}
+ const answer=await askGroq(msgs);wait.remove();addMessage('assistant',answer);if(voiceMode&&!muted)speak(answer);
+ }catch(e){wait.remove();addMessage('assistant','Error: '+e.message,false)}finally{busy=false;$('sendBtn').disabled=false}}
+function speak(text){if(!('speechSynthesis'in window))return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=1;u.pitch=1;u.onstart=()=>$('voiceOrb').classList.add('speaking');u.onend=()=> $('voiceOrb').classList.remove('speaking');window.speechSynthesis.speak(u)}
+function startRecognition(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){toast('Speech recognition is not supported in this browser.');return}if(recognition&&listening){recognition.stop();return}recognition=new SR();recognition.lang=navigator.language||'en-US';recognition.interimResults=true;recognition.continuous=false;recognition.onresult=e=>{let s='';for(let i=e.resultIndex;i<e.results.length;i++)s+=e.results[i][0].transcript;$('prompt').value=s};recognition.onend=()=>{listening=false;$('voiceListen').classList.remove('active');$('voiceStatus').textContent='Listening is off'};recognition.onerror=e=>toast('Speech recognition: '+e.error);recognition.start();listening=true;$('voiceListen').classList.add('active');$('voiceStatus').textContent='Listening…'}
 function openSettings(){['supabaseUrl','supabaseKey','groqKey','webhookUrl'].forEach(k=>$('set'+k[0].toUpperCase()+k.slice(1)).value=settings[k]||'');$('settingsModal').classList.remove('hidden')}
-function saveSettings(){settings={supabaseUrl:$('setSupabaseUrl').value.trim(),supabaseKey:$('setSupabaseKey').value.trim(),groqKey:$('setGroqKey').value.trim(),webhookUrl:$('setWebhook').value.trim()};saveLocal();setClient();$('settingsModal').classList.add('hidden');toast('Settings saved.')}
-async function saveBook(){if(!supabase||!user)return toast('Sign in first.');let title=$('bookTitle').value.trim(),content=$('bookContent').value.trim();const file=$('bookFile').files[0];if(file){if(file.size>2e6)return toast('File must be under 2 MB.');content=await file.text();if(!title)title=file.name.replace(/\.txt$/i,'')}if(!title||!content)return toast('Enter a title and text.');const {error}=await supabase.from('books').insert({title,content});if(error)return toast(error.message);toast('Book saved.')}
-async function searchBooksUI(){const data=await fetchBooks($('bookSearch').value.trim());$('bookResults').innerHTML=data.length?data.map(b=>`<div><b>${esc(b.title)}</b><br>${esc(b.content.slice(0,280))}</div>`).join(''):'No matching books.'}
-async function searchMemoryUI(){const q=$('memoryQuery').value.trim();if(!q)return;const data=await fetchMemories(q);$('memoryResults').innerHTML=data.length?data.map(m=>`<div><b>${esc(m.role)}</b>: ${esc(m.content.slice(0,240))}</div>`).join(''):'No matching memories.'}
-function newChat(){chat=[];$('messages').innerHTML='<div class="welcome" id="welcome"><h1>What do you need to know?</h1><p>Direct answers. Persistent memory. No filler.</p></div>';closeSide()}
-$('showLoginConfig').onchange=e=>$('loginConfig').classList.toggle('hidden',!e.target.checked);
+function saveSettings(){settings={...settings,supabaseUrl:$('setSupabaseUrl').value.trim(),supabaseKey:$('setSupabaseKey').value.trim(),groqKey:$('setGroqKey').value.trim(),webhookUrl:$('setWebhook').value.trim()};saveLocal();setClient();$('settingsModal').classList.add('hidden');toast('Settings saved.');}
+async function saveBook(){if(!supabase||!user)return toast('Sign in to save books.');let title=$('bookTitle').value.trim(),content=$('bookContent').value.trim();const file=$('bookFile').files[0];if(file){if(file.size>2*1024*1024)return toast('Text file must be under 2 MB.');content=await file.text();if(!title)title=file.name.replace(/\.txt$/i,'')}if(!title||!content)return toast('Enter a title and book text.');const {error}=await supabase.from('books').insert({title,content});if(error)return toast('Save failed: '+error.message);toast('Book saved.');$('bookTitle').value='';$('bookContent').value='';$('bookFile').value=''}
+async function searchBooksUI(){const q=$('bookSearch').value.trim();if(!q)return;const data=await fetchBooks(q);$('bookResults').innerHTML=data.length?data.map(b=>`<div><b>${esc(b.title)}</b><br>${esc(b.content.slice(0,280))}${b.content.length>280?'…':''}</div>`).join(''):'No matching books found.'}
+async function searchMemoryUI(){const q=$('memoryQuery').value.trim();if(!q||!supabase||!user)return;const data=await fetchMemories(q);$('memoryResults').innerHTML=data.length?data.map(m=>`<div><b>${esc(m.role)}</b>: ${esc(m.content.slice(0,240))}</div>`).join(''):'No matching memories.'}
+function newChat(){chat=[];$('messages').innerHTML='';const w=document.createElement('div');w.className='welcome';w.id='welcome';w.innerHTML='<h1>What do you need to know?</h1><p>Direct answers. Persistent memory. No filler.</p>';$('messages').appendChild(w);closeSide()}
+$('showLoginConfig').addEventListener('change',e=>$('loginConfig').classList.toggle('hidden',!e.target.checked));
 $('loginBtn').onclick=login;$('menuBtn').onclick=openSide;$('closeSide').onclick=closeSide;$('shade').onclick=closeSide;$('newChat').onclick=newChat;$('sendBtn').onclick=send;
-$('prompt').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}};$('prompt').oninput=e=>{e.target.style.height='auto';e.target.style.height=Math.min(e.target.scrollHeight,130)+'px'};
-$('micBtn').onclick=startRecognition;$('voiceBtn').onclick=()=>{$('voiceOverlay').classList.remove('hidden');voiceMode=true};$('voiceClose').onclick=()=>{$('voiceOverlay').classList.add('hidden');voiceMode=false;if(listening&&recognition)recognition.stop();speechSynthesis?.cancel()};
-$('voiceListen').onclick=startRecognition;$('voiceMute').onclick=()=>{muted=!muted;$('voiceMute').textContent=muted?'🔇':'🔊';if(muted)speechSynthesis?.cancel()};
-$('openSettings').onclick=()=>{closeSide();openSettings()};$('closeSettings').onclick=()=>$('settingsModal').classList.add('hidden');$('saveSettings').onclick=saveSettings;$('logout').onclick=logout;
-$('openBooks').onclick=()=>{closeSide();$('booksModal').classList.remove('hidden')};$('closeBooks').onclick=()=>$('booksModal').classList.add('hidden');$('saveBook').onclick=saveBook;$('searchBooks').onclick=searchBooksUI;$('searchMemory').onclick=searchMemoryUI;
+$('prompt').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});$('prompt').addEventListener('input',e=>{e.target.style.height='auto';e.target.style.height=Math.min(e.target.scrollHeight,130)+'px'});
+$('micBtn').onclick=startRecognition;$('voiceBtn').onclick=()=>{$('voiceOverlay').classList.remove('hidden');voiceMode=true};$('voiceClose').onclick=()=>{$('voiceOverlay').classList.add('hidden');voiceMode=false;if(listening&&recognition)recognition.stop();window.speechSynthesis?.cancel()};
+$('voiceListen').onclick=startRecognition;$('voiceMute').onclick=()=>{muted=!muted;$('voiceMute').textContent=muted?'🔇':'🔊';if(muted)window.speechSynthesis?.cancel()};
+$('openSettings').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();openModal('settingsModal');openSettings()});$('closeSettings').onclick=()=>$('settingsModal').classList.add('hidden');$('saveSettings').onclick=saveSettings;$('logout').onclick=logout;
+$('openBooks').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();openModal('booksModal')});$('closeBooks').onclick=()=>$('booksModal').classList.add('hidden');$('saveBook').onclick=saveBook;$('searchBooks').onclick=searchBooksUI;$('openMemory').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();openModal('memoryModal')});$('closeMemory').onclick=()=>$('memoryModal').classList.add('hidden');$('searchMemory').onclick=searchMemoryUI;$('memoryQuery').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchMemoryUI()}});
+['settingsModal','booksModal','memoryModal'].forEach(id=>$(id).addEventListener('click',e=>{if(e.target===$(id))$(id).classList.add('hidden')}));document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-back').forEach(el=>el.classList.add('hidden'))});
 initAuth();
 })();
 </script>
